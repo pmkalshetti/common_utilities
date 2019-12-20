@@ -1,4 +1,5 @@
 import numpy as np
+from common_utilities.instance import tf2np
 
 
 def compute_barycentric_coords(verts, triangles, n_samples):
@@ -21,6 +22,10 @@ def compute_barycentric_coords(verts, triangles, n_samples):
     ids_triangle : np.ndarray of shape (n_samples, )
         Index of triangle for each sampled point.
     """
+
+    verts = tf2np(verts)
+    triangles = tf2np(triangles)
+
     # compute area of each triangle and normalize
     cross = np.cross(
         verts[triangles[:, 0], :] - verts[triangles[:, 2], :],
