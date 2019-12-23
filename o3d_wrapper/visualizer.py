@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import open3d as o3d
+import tensorflow as tf
 
 
 class Visualizer:
@@ -25,7 +26,7 @@ class Visualizer:
 
     def __init__(self, window_name="Visualizer", width=640, height=480,
                  left=50, top=50, path_render_option=None, fx=475, fy=475,
-                 pos_cam=[0, 0, 300]):
+                 pos_cam=[0, 0, 0]):
         """Creates a visualizer with given properties.
 
         Arguments
@@ -160,6 +161,22 @@ class Visualizer:
         depth = np.asarray(depth)
 
         return depth
+
+    def screen_buffer(self):
+        """Returns screen buffer.
+
+        Returns
+        -------
+        img : np.ndarray of shape (self.height, self.width)
+            Screen buffer of vis.
+        """
+        img = self.vis.capture_screen_float_buffer(True)
+        img = np.asarray(img)
+
+        return img
+
+    def get_cam(self):
+        return tf.constant((self.fx, self.fy, self.cx, self.cy))
 
     def __del__(self):
         self.vis.destroy_window()
