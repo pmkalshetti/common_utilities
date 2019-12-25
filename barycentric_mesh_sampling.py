@@ -1,4 +1,5 @@
 import numpy as np
+import tensorflow as tf
 from common_utilities.instance import tf2np
 
 
@@ -58,3 +59,24 @@ def compute_barycentric_coords(verts, triangles, n_samples):
     coords = np.random.rand(n_samples, 2).astype(np.float32)
 
     return coords, ids_triangle
+
+
+def dense_sample(verts, triangles, barycentric_coords, barycentric_triangles):
+    corner1_vertices = tf.gather(
+        verts, triangles[barycentric_triangles, 0]
+    )
+    corner2_vertices = tf.gather(
+        verts, triangles[barycentric_triangles, 1]
+    )
+    corner3_vertices = tf.gather(
+        verts, triangles[barycentric_triangles, 2]
+    )
+
+    samples = (1 - tf.sqrt(barycentric_coords[:, 0:1])) \
+        * corner1_vertices \
+        + tf.sqrt(barycentric_coords[:, 0:1]) *\
+        (1 - barycentric_coords[:, 1:]) * corner2_vertices \
+        + tf.sqrt(barycentric_coords[:, 0:1]) *\
+        barycentric_coords[:, 1:] * corner3_vertices
+
+    return samples

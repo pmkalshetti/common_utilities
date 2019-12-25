@@ -68,3 +68,25 @@ def depth_to_uvd(depth):
     )
 
     return uvd
+
+
+def depth_to_xyz(depth, cam):
+    """Returns xyz points from depth.
+
+    Arguments
+    ---------
+    depth : shape=(h, w)
+        depth image
+
+    cam : (4,)
+        camera parameters [fx, fy, cx, cy]
+
+    Returns
+    -------
+    xyz : shape=(h*w, 3)
+        xyz points of corresponding depth
+    """
+    depth_uvd = depth_to_uvd(depth)
+    depth_xyz = uvd_to_xyz(depth_uvd, cam)
+
+    return depth_xyz
