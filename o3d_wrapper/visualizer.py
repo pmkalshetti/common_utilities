@@ -172,6 +172,7 @@ class Visualizer:
         """
         img = self.vis.capture_screen_float_buffer(True)
         img = np.asarray(img)
+        img = (img * 255).astype(np.uint8)
 
         return img
 

@@ -12,7 +12,7 @@ class Mesh:
         Triangle mesh object as per `open3d`.
     """
 
-    def __init__(self, verts, triangles, color=[255, 0, 0]):
+    def __init__(self, verts, triangles, color=[247, 174, 72]):
         """Creates a mesh with given vertices and triangles.
 
         Arguments
