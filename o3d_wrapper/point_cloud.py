@@ -101,5 +101,9 @@ class PointCloud:
         radius : float
             Radius of neighbourhood in mm.
         """
-        self.pcd, inds = o3d.geometry.radius_outlier_removal(
-            self.pcd, n_pts, radius)
+        self.pcd, inds = self.pcd.remove_radius_outlier(n_pts, radius)
+
+    def estimate_normals(self):
+        self.pcd.estimate_normals()
+
+        return np.asarray(self.pcd.normals).astype(np.float32)

@@ -92,3 +92,9 @@ class Mesh:
                 file.write("v {} {} {}\n".format(v[0], v[1], v[2]))
             for f in self.get_triangles():
                 file.write("f {:d} {:d} {:d}\n".format(f[0], f[1], f[2]))
+
+    def get_normals(self):
+        self.mesh.compute_triangle_normals()
+        self.mesh.compute_vertex_normals()
+
+        return np.asarray(self.mesh.vertex_normals).astype(np.float32)
