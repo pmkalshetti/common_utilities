@@ -14,7 +14,7 @@ class Visualizer:
     def __init__(self, window_name="Visualizer", left=50, top=50,
                  width=640, height=480, fx=475, fy=475, pos_cam=[0, 0, 0],
                  background_color=[1.0, 1.0, 1.0],
-                 point_size=1.0,
+                 point_size=2.0,
                  mesh_show_wireframe=True, mesh_shade_option=0):
         """Creates a visualizer with given properties.
 
