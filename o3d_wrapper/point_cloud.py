@@ -35,6 +35,12 @@ class PointCloud:
         if pts is not None:
             self.update(pts)
 
+    def set_normals(self, normals):
+        if isinstance(normals, tf.Tensor):
+            normals = normals.numpy()
+
+        self.pcd.normals = o3d.utility.Vector3dVector(normals)
+
     def update(self, pts):
         """Updates location of points.
 
@@ -105,5 +111,6 @@ class PointCloud:
 
     def estimate_normals(self):
         self.pcd.estimate_normals()
+        self.pcd.orient_normals_towards_camera_location()
 
         return np.asarray(self.pcd.normals).astype(np.float32)
