@@ -1,6 +1,8 @@
 import numpy as np
 import tensorflow as tf
 from common_utilities.instance import tf2np
+from tensorflow_graphics.geometry.representation.mesh.normals import \
+    face_normals, vertex_normals
 
 
 def compute_barycentric_coords(verts, triangles, n_samples):
@@ -80,3 +82,25 @@ def dense_sample(verts, triangles, barycentric_coords, barycentric_triangles):
         barycentric_coords[:, 1:] * corner3_vertices
 
     return samples
+
+
+def get_normals_at_samples(verts, triangles,
+                           barycentric_coords, barycentric_triangles):
+    normals_at_verts = vertex_normals(verts, triangles)
+    corner1_normals = tf.gather(
+        normals_at_verts, triangles[barycentric_triangles, 0]
+    )
+    corner2_normals = tf.gather(
+        normals_at_verts, triangles[barycentric_triangles, 1]
+    )
+    corner3_normals = tf.gather(
+        normals_at_verts, triangles[barycentric_triangles, 2]
+    )
+    normals_at_samples = (1 - tf.sqrt(barycentric_coords[:, 0:1])) \
+        * corner1_normals \
+        + tf.sqrt(barycentric_coords[:, 0:1]) *\
+        (1 - barycentric_coords[:, 1:]) * corner2_normals \
+        + tf.sqrt(barycentric_coords[:, 0:1]) *\
+        barycentric_coords[:, 1:] * corner3_normals
+
+    return normals_at_samples
